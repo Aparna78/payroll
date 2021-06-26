@@ -23,22 +23,19 @@ class EmployeeController {
     this.repository = repository;
   }
 
-
-  // Aggregate root
-  // tag::get-aggregate-root[]
+  //eg: curl -v localhost:8080/employees
   @GetMapping("/employees")
   List<Employee> all() {
     return repository.findAll();
   }
-  // end::get-aggregate-root[]
 
+  //eg: curl -X POST localhost:8080/employees -H 'Content-type:application/json' -d '{"name": "Samwise Gamgee", "role": "gardener"}'
   @PostMapping("/employees")
   Employee newEmployee(@RequestBody Employee newEmployee) {
     return repository.save(newEmployee);
   }
 
-  // Single item
-  
+  //eg: curl -v localhost:8080/employees/99
   @GetMapping("/employees/{id}")
   Employee one(@PathVariable Long id) {
     
@@ -46,6 +43,7 @@ class EmployeeController {
       .orElseThrow(() -> new EmployeeNotFoundException(id));
   }
 
+  //eg: curl -X PUT localhost:8080/employees/3 -H 'Content-type:application/json' -d '{"name": "Samwise Gamgee", "role": "ring bearer"}'
   @PutMapping("/employees/{id}")
   Employee replaceEmployee(@RequestBody Employee newEmployee, @PathVariable Long id) {
     
@@ -61,6 +59,7 @@ class EmployeeController {
       });
   }
 
+  //eg: curl -X DELETE localhost:8080/employees/3
   @DeleteMapping("/employees/{id}")
   void deleteEmployee(@PathVariable Long id) {
     repository.deleteById(id);
